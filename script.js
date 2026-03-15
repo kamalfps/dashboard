@@ -4,36 +4,43 @@ let regExp = /(?:youtube\.com.*(?:\?|&)v=|youtu\.be\/)([^&]+)/;
 let match = url.match(regExp);
 
 return match ? match[1] : null;
+
 }
 
-function generateClip(){
+function generateClips(){
 
-let url = document.getElementById("videoURL").value;
-let start = document.getElementById("startTime").value;
-let end = document.getElementById("endTime").value;
-
-let videoID = getVideoID(url);
+let url=document.getElementById("videoURL").value;
+let videoID=getVideoID(url);
 
 if(!videoID){
 alert("Invalid YouTube link");
 return;
 }
 
-let embed = `
-<iframe width="560" height="315"
+let container=document.getElementById("player");
+
+container.innerHTML="";
+
+for(let i=0;i<5;i++){
+
+let start=i*30;
+let end=start+30;
+
+let clip=`
+<div style="margin:30px">
+
+<h3>Clip ${i+1}</h3>
+
+<iframe width="400" height="225"
 src="https://www.youtube.com/embed/${videoID}?start=${start}&end=${end}"
 frameborder="0"
-allowfullscreen>
-</iframe>
+allowfullscreen></iframe>
+
+</div>
 `;
 
-document.getElementById("player").innerHTML = embed;
+container.innerHTML+=clip;
 
-document.getElementById("downloadBtn").style.display="inline-block";
 }
-
-function downloadClip(){
-
-alert("Download feature will require server processing (coming soon).");
 
 }
