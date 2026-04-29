@@ -5,45 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ProTip | #1 Tipping Platform for Content Creators</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0a0a0a;
-  --surface:#141414;
-  --surface2:#1a1a1a;
-  --border:rgba(255,255,255,0.07);
-  --border2:rgba(255,255,255,0.13);
-  --purple:#7F77DD;
-  --purple-light:#AFA9EC;
-  --purple-dim:#534AB7;
-  --purple-dark:#26215C;
-  --text:#ffffff;
-  --text-muted:rgba(255,255,255,0.55);
-  --text-dim:rgba(255,255,255,0.28);
-  --green:#1D9E75;
-  --green-light:#5DCAA5;
+  --bg:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --purple:#7F77DD; --purple-light:#AFA9EC; --purple-dim:#534AB7; --purple-dark:#26215C;
+  --text:#ffffff; --text-muted:rgba(255,255,255,0.55); --text-dim:rgba(255,255,255,0.28);
+  --green:#1D9E75; --green-light:#5DCAA5;
+  --sidebar-w:220px;
 }
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 48px;
-  background:rgba(10,10,10,0.9);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px;text-decoration:none;}
+/* ─── VIEWS ─────────────────────────────── */
+.view{display:none;}
+.view.active{display:block;}
+#dashView.active{display:flex;}
+
+/* ══════════════════════════════════════════
+   LANDING
+══════════════════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(10,10,10,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px;text-decoration:none;cursor:pointer;}
 .nav-logo span{color:var(--purple);}
 .nav-links{display:flex;gap:28px;align-items:center;}
 .nav-links a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color 0.15s;}
 .nav-links a:hover{color:var(--text);}
-.nav-cta{padding:8px 20px;background:var(--purple-dim);color:var(--text);border:none;border-radius:8px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.15s;}
-.nav-cta:hover{background:var(--purple);}
+.nav-right{display:flex;gap:10px;align-items:center;}
+.nav-btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:all 0.15s;border:none;}
+.nav-btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border2);}
+.nav-btn-ghost:hover{background:var(--surface2);color:var(--text);}
+.nav-btn-fill{background:var(--purple-dim);color:var(--text);}
+.nav-btn-fill:hover{background:var(--purple);}
 
-/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px;}
 .hero-orb{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(83,74,183,0.3) 0%,rgba(83,74,183,0.08) 45%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;}
 .ring{position:absolute;border-radius:50%;border:1px solid rgba(127,119,221,0.1);top:50%;left:50%;}
@@ -58,12 +54,11 @@ nav{
 .hero-title .accent{color:var(--purple);}
 .hero-sub{font-size:16px;color:var(--text-muted);text-align:center;margin:22px 0 36px;position:relative;z-index:1;max-width:380px;}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
-.btn-primary{padding:14px 32px;background:var(--purple-dim);color:var(--text);border:none;border-radius:10px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.15s;}
+.btn-primary{padding:14px 32px;background:var(--purple-dim);color:var(--text);border:none;border-radius:10px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.15s;display:inline-block;}
 .btn-primary:hover{background:var(--purple);}
-.btn-outline{padding:14px 32px;background:transparent;color:var(--text-muted);border:1px solid var(--border2);border-radius:10px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:all 0.15s;}
+.btn-outline{padding:14px 32px;background:transparent;color:var(--text-muted);border:1px solid var(--border2);border-radius:10px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:all 0.15s;display:inline-block;}
 .btn-outline:hover{background:var(--surface2);color:var(--text);}
 
-/* STATS BAR */
 .stats-bar{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;padding:36px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);}
 .stat-item{text-align:center;}
 .stat-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;margin-bottom:4px;}
@@ -71,7 +66,6 @@ nav{
 .stat-num.purple{color:var(--purple-light);}
 .stat-label{font-size:12px;color:var(--text-dim);}
 
-/* HOW TO USE */
 .how-section{padding:80px 24px;background:var(--bg);}
 .section-inner{max-width:1100px;margin:0 auto;}
 .section-title{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:700;text-align:center;margin-bottom:48px;}
@@ -82,168 +76,47 @@ nav{
 .how-card.active .how-card-header{background:var(--purple-dim);border-color:var(--purple-dim);}
 .how-card-body{padding:24px 20px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
 .how-mockup{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;width:100%;font-size:12px;color:var(--text-muted);}
-.how-mockup .field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text-dim);margin-bottom:6px;}
+.how-field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text-dim);margin-bottom:6px;}
 .pay-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-muted);margin-bottom:4px;}
 .pay-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);}
 
-/* ============================================
-   UNIQUE CREATOR SECTION — "The Math Is Simple"
-   A horizontal scrolling comparison calculator
-   that shows exactly how much more you earn
-============================================ */
-.math-section{
-  padding:100px 24px;
-  background:var(--bg);
-  position:relative;
-  overflow:hidden;
-}
-.math-section::before{
-  content:'';
-  position:absolute;
-  top:-100px;left:50%;
-  transform:translateX(-50%);
-  width:800px;height:400px;
-  background:radial-gradient(ellipse,rgba(29,158,117,0.06) 0%,transparent 70%);
-  pointer-events:none;
-}
-.math-label{
-  display:inline-block;
-  font-size:11px;font-weight:500;
-  letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--green-light);
-  background:rgba(29,158,117,0.1);
-  border:1px solid rgba(29,158,117,0.2);
-  padding:5px 14px;border-radius:20px;
-  margin-bottom:20px;
-}
-.math-headline{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(32px,5vw,54px);
-  font-weight:800;
-  line-height:1.05;
-  letter-spacing:-2px;
-  max-width:640px;
-  margin-bottom:16px;
-}
-.math-headline .cut{
-  text-decoration:line-through;
-  color:var(--text-dim);
-}
-.math-subtext{
-  font-size:15px;color:var(--text-muted);
-  max-width:500px;margin-bottom:48px;
-  line-height:1.7;
-}
+.ticker-section{padding:48px 0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);}
+.ticker-track{display:flex;gap:32px;animation:tickerAnim 28s linear infinite;width:max-content;}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes tickerAnim{from{transform:translateX(0);}to{transform:translateX(-50%)}}
+.ticker-item{display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface2);border:1px solid var(--border);border-radius:40px;white-space:nowrap;font-size:13px;color:var(--text-muted);flex-shrink:0;}
+.ticker-item .amount{font-family:'Syne',sans-serif;font-weight:700;color:var(--green-light);}
+.ticker-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0;}
 
-/* SLIDER CALCULATOR */
-.calc-wrap{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:36px 40px;
-  max-width:720px;
-  margin-bottom:56px;
-}
-.calc-row{
-  display:flex;align-items:center;gap:16px;
-  margin-bottom:28px;
-}
-.calc-row:last-child{margin-bottom:0;}
-.calc-label{
-  font-size:13px;color:var(--text-muted);
-  min-width:180px;
-}
-.calc-slider{
-  flex:1;
-  -webkit-appearance:none;
-  height:4px;
-  border-radius:2px;
-  background:var(--surface2);
-  outline:none;
-  cursor:pointer;
-}
-.calc-slider::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:18px;height:18px;
-  border-radius:50%;
-  background:var(--purple);
-  cursor:pointer;
-  border:2px solid var(--bg);
-  box-shadow:0 0 0 3px rgba(127,119,221,0.2);
-}
-.calc-val{
-  font-family:'Syne',sans-serif;
-  font-size:15px;font-weight:700;
-  color:var(--text);
-  min-width:80px;
-  text-align:right;
-}
-
-.calc-results{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  gap:16px;
-  align-items:center;
-  margin-top:32px;
-  padding-top:32px;
-  border-top:1px solid var(--border);
-}
-.result-box{
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:20px;
-  text-align:center;
-}
+.math-section{padding:100px 24px;background:var(--bg);position:relative;overflow:hidden;}
+.math-section::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse,rgba(29,158,117,0.06) 0%,transparent 70%);pointer-events:none;}
+.math-label{display:inline-block;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-light);background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.math-headline{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,54px);font-weight:800;line-height:1.05;letter-spacing:-2px;max-width:640px;margin-bottom:16px;}
+.math-headline .cut{text-decoration:line-through;color:var(--text-dim);}
+.math-subtext{font-size:15px;color:var(--text-muted);max-width:500px;margin-bottom:48px;line-height:1.7;}
+.calc-wrap{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 40px;max-width:720px;margin-bottom:56px;}
+.calc-row{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.calc-label{font-size:13px;color:var(--text-muted);min-width:180px;}
+.calc-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--surface2);outline:none;cursor:pointer;}
+.calc-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--purple);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 3px rgba(127,119,221,0.2);}
+.calc-val{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);min-width:80px;text-align:right;}
+.calc-results{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:32px;padding-top:32px;border-top:1px solid var(--border);}
+.result-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;}
 .result-box.theirs{opacity:0.65;}
-.result-box.ours{
-  background:rgba(29,158,117,0.07);
-  border-color:rgba(29,158,117,0.25);
-}
+.result-box.ours{background:rgba(29,158,117,0.07);border-color:rgba(29,158,117,0.25);}
 .result-platform{font-size:11px;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;}
-.result-amount{
-  font-family:'Syne',sans-serif;
-  font-size:30px;font-weight:800;
-  line-height:1;margin-bottom:4px;
-}
+.result-amount{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1;margin-bottom:4px;}
 .result-box.theirs .result-amount{color:#E24B4A;}
 .result-box.ours .result-amount{color:var(--green-light);}
 .result-note{font-size:11px;color:var(--text-dim);}
-.vs-badge{
-  font-family:'Syne',sans-serif;
-  font-size:13px;font-weight:700;
-  color:var(--text-dim);
-  text-align:center;
-}
-.extra-earn{
-  text-align:center;margin-top:20px;
-  font-size:14px;color:var(--text-muted);
-}
+.vs-badge{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-dim);text-align:center;}
+.extra-earn{text-align:center;margin-top:20px;font-size:14px;color:var(--text-muted);}
 .extra-earn strong{color:var(--green-light);font-family:'Syne',sans-serif;font-size:18px;}
-
-/* COMPARISON TABLE — UNIQUE HORIZONTAL SCROLL */
-.compare-strip{
-  display:flex;gap:12px;
-  overflow-x:auto;
-  padding-bottom:8px;
-  scrollbar-width:none;
-}
+.compare-strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;}
 .compare-strip::-webkit-scrollbar{display:none;}
-.compare-item{
-  flex-shrink:0;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:20px 22px;
-  min-width:200px;
-  transition:border-color 0.2s,transform 0.2s;
-  cursor:default;
-}
+.compare-item{flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;min-width:200px;transition:border-color 0.2s,transform 0.2s;}
 .compare-item:hover{border-color:var(--border2);transform:translateY(-3px);}
-.compare-item.protip{
-  background:rgba(127,119,221,0.07);
-  border-color:rgba(127,119,221,0.3);
-}
+.compare-item.protip{background:rgba(127,119,221,0.07);border-color:rgba(127,119,221,0.3);}
 .ci-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;}
 .ci-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px;}
 .ci-key{color:var(--text-dim);}
@@ -252,51 +125,12 @@ nav{
 .ci-val.good{color:var(--green-light);}
 .ci-val.ok{color:#EF9F27;}
 
-/* TICKER — scrolling testimonials */
-.ticker-section{
-  padding:48px 0;
-  overflow:hidden;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  background:var(--surface);
-}
-.ticker-track{
-  display:flex;gap:32px;
-  animation:ticker 28s linear infinite;
-  width:max-content;
-}
-.ticker-track:hover{animation-play-state:paused;}
-@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%)}}
-.ticker-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 20px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:40px;
-  white-space:nowrap;
-  font-size:13px;color:var(--text-muted);
-  flex-shrink:0;
-}
-.ticker-item .amount{
-  font-family:'Syne',sans-serif;
-  font-weight:700;color:var(--green-light);
-}
-.ticker-avatar{
-  width:24px;height:24px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:700;
-  font-family:'Syne',sans-serif;
-  flex-shrink:0;
-}
-
-/* WAITLIST */
 .waitlist-section{padding:80px 24px;}
 .waitlist-inner{max-width:760px;margin:0 auto;background:linear-gradient(135deg,#1a1535 0%,#0e1a2e 100%);border:1px solid rgba(127,119,221,0.2);border-radius:20px;padding:56px 48px;text-align:center;}
 .waitlist-title{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:700;margin-bottom:14px;}
 .waitlist-sub{font-size:15px;color:var(--text-muted);max-width:480px;margin:0 auto 28px;line-height:1.7;}
 .btn-waitlist{display:inline-block;padding:15px 40px;background:var(--purple-dim);color:var(--text);border:none;border-radius:10px;font-size:16px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:background 0.15s;}
 .btn-waitlist:hover{background:var(--purple);}
-
 footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 .footer-links{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:center;margin-bottom:16px;}
 .footer-links a{font-size:13px;color:var(--text-dim);text-decoration:none;transition:color 0.15s;}
@@ -304,6 +138,162 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 .footer-credit{font-size:12px;color:var(--text-dim);}
 .footer-credit span{color:var(--purple-light);}
 
+/* ══════════════════════════════════════════
+   AUTH MODAL (Login / Signup)
+══════════════════════════════════════════ */
+.auth-overlay{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px;position:relative;overflow:hidden;}
+.auth-orb{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(83,74,183,0.2) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:420px;position:relative;z-index:1;}
+.auth-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;text-align:center;margin-bottom:6px;cursor:pointer;}
+.auth-logo span{color:var(--purple);}
+.auth-tagline{font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:28px;}
+.auth-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;text-align:center;margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:24px;}
+
+/* Google Button */
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 20px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;margin-bottom:20px;}
+.btn-google:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.2);}
+.google-icon{width:18px;height:18px;flex-shrink:0;}
+
+.auth-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-divider span{font-size:12px;color:var(--text-dim);}
+
+.auth-field{margin-bottom:14px;}
+.auth-field label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:500;}
+.auth-field input{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.15s;}
+.auth-field input:focus{border-color:var(--purple-dim);}
+.auth-field input::placeholder{color:var(--text-dim);}
+
+.btn-auth{width:100%;padding:12px;background:var(--purple-dim);color:var(--text);border:none;border-radius:10px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s;margin-top:4px;}
+.btn-auth:hover{background:var(--purple);}
+
+.auth-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--text-dim);}
+.auth-switch a{color:var(--purple-light);cursor:pointer;text-decoration:none;}
+.auth-switch a:hover{text-decoration:underline;}
+.auth-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-dim);cursor:pointer;margin-bottom:20px;transition:color 0.15s;}
+.auth-back:hover{color:var(--text-muted);}
+
+/* terms */
+.auth-terms{font-size:11px;color:var(--text-dim);text-align:center;margin-top:16px;line-height:1.6;}
+.auth-terms a{color:var(--purple-light);text-decoration:none;}
+
+/* ══════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════ */
+#dashView{min-height:100vh;}
+
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;}
+.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid var(--border);}
+.sidebar-wordmark{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.sidebar-wordmark span{color:var(--purple);}
+.sidebar-badge{display:inline-block;font-size:10px;font-weight:500;color:var(--green-light);background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.25);padding:2px 8px;border-radius:20px;margin-top:5px;letter-spacing:0.05em;}
+.sidebar-nav{padding:14px 12px;flex:1;}
+.nav-section-label{font-size:10px;font-weight:500;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;padding:8px 8px 6px;margin-top:8px;}
+.s-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:14px;font-weight:400;color:var(--text-muted);cursor:pointer;transition:all 0.15s;margin-bottom:2px;}
+.s-nav-item:hover{background:var(--surface2);color:var(--text);}
+.s-nav-item.active{background:rgba(127,119,221,0.12);color:var(--purple-light);font-weight:500;}
+.s-nav-item svg{width:18px;height:18px;opacity:0.7;flex-shrink:0;}
+.s-nav-item.active svg{opacity:1;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);margin-left:auto;animation:pulseAnim 2s infinite;}
+
+.sidebar-footer{padding:14px 12px;border-top:1px solid var(--border);}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--surface2);cursor:pointer;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--purple-light);flex-shrink:0;overflow:hidden;}
+.user-avatar img{width:100%;height:100%;object-fit:cover;}
+.user-name{font-size:13px;font-weight:500;color:var(--text);}
+.user-plan{font-size:11px;color:var(--text-dim);}
+
+.dash-main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.topbar-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.tb-outline{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+.tb-outline:hover{background:var(--surface2);color:var(--text);}
+.tb-fill{background:var(--purple-dim);color:var(--text);}
+.tb-fill:hover{background:var(--purple);}
+.tb-danger{background:transparent;border:1px solid rgba(226,75,74,0.3);color:#F09595;font-size:12px;padding:6px 12px;}
+.tb-danger:hover{background:rgba(226,75,74,0.1);}
+
+.tip-link-bar{margin:18px 32px 0;background:rgba(127,119,221,0.06);border:1px solid rgba(127,119,221,0.15);border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.tlb-label{font-size:12px;color:var(--text-dim);margin-bottom:2px;}
+.tlb-url{font-size:14px;font-weight:500;color:var(--purple-light);font-family:'Syne',sans-serif;}
+.tlb-url span{color:var(--text-dim);}
+.copy-btn{padding:6px 14px;font-size:12px;font-weight:500;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.15s;}
+.copy-btn:hover{background:var(--surface2);color:var(--text);}
+.platform-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;}
+.pill-yt{background:rgba(226,75,74,0.12);color:#F09595;}
+.pill-tw{background:rgba(127,119,221,0.15);color:#AFA9EC;}
+
+.dash-content{padding:22px 32px 40px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color 0.2s;}
+.stat-card:hover{border-color:var(--border2);}
+.sc-label{font-size:12px;color:var(--text-dim);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sc-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--text);line-height:1;margin-bottom:7px;}
+.sc-val.green{color:var(--green-light);}
+.sc-change{font-size:12px;display:flex;align-items:center;gap:4px;}
+.sc-change.up{color:var(--green-light);}
+.sc-change.down{color:#E24B4A;}
+.sc-change.neutral{color:var(--text-dim);}
+.stat-card.highlight{background:rgba(127,119,221,0.07);border-color:rgba(127,119,221,0.2);}
+.notif-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulseAnim 2s infinite;display:inline-block;}
+
+.mid-grid{display:grid;grid-template-columns:1fr 320px;gap:14px;margin-bottom:22px;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
+.panel-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.panel-action{font-size:12px;color:var(--purple-light);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;}
+
+.chart-area{padding:18px;}
+.chart-tabs{display:flex;gap:4px;margin-bottom:14px;}
+.tab{padding:5px 12px;font-size:12px;font-weight:500;border-radius:6px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;color:var(--text-dim);background:transparent;transition:all 0.15s;}
+.tab.active{background:var(--surface2);color:var(--text);}
+.chart-wrap{position:relative;height:150px;}
+
+.tip-row{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);transition:background 0.15s;cursor:pointer;}
+.tip-row:last-child{border-bottom:none;}
+.tip-row:hover{background:var(--surface2);}
+.tip-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0;}
+.tip-info{flex:1;min-width:0;}
+.tip-name{font-size:13px;font-weight:500;}
+.tip-msg{font-size:12px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tip-right{text-align:right;}
+.tip-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--green-light);}
+.tip-time{font-size:11px;color:var(--text-dim);}
+
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.tipper-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);}
+.tipper-row:last-child{border-bottom:none;}
+.tipper-rank{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-dim);width:20px;}
+.tipper-rank.gold{color:#EF9F27;}
+.tipper-rank.silver{color:#B4B2A9;}
+.tipper-rank.bronze{color:#D85A30;}
+.tipper-info{flex:1;}
+.tipper-name{font-size:13px;font-weight:500;}
+.tipper-tips{font-size:11px;color:var(--text-dim);}
+.tipper-bar-wrap{width:50px;background:var(--surface2);border-radius:4px;height:3px;margin-top:4px;}
+.tipper-bar{height:3px;border-radius:4px;background:var(--purple);}
+.tipper-amount{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+
+.payout-section{padding:18px;}
+.payout-balance{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;text-align:center;}
+.pb-label{font-size:12px;color:var(--text-dim);margin-bottom:6px;}
+.pb-amount{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--green-light);}
+.pb-sub{font-size:12px;color:var(--text-dim);margin-top:4px;}
+.payout-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.payout-row:last-child{border-bottom:none;}
+.pr-label{color:var(--text-dim);}
+.pr-val{font-weight:500;}
+.pr-val.green{color:var(--green-light);}
+.withdraw-btn{width:100%;margin-top:14px;padding:11px;background:var(--green-dim, #0F6E56);color:var(--text);border:none;border-radius:8px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s;}
+.withdraw-btn:hover{background:var(--green);}
+
+@media(max-width:960px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .mid-grid,.bottom-grid{grid-template-columns:1fr;}
+}
 @media(max-width:768px){
   nav{padding:14px 20px;}
   .nav-links{display:none;}
@@ -316,249 +306,587 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
   .waitlist-inner{padding:36px 24px;}
   .stats-bar{gap:24px;}
   .math-headline{font-size:28px;}
+  .sidebar{transform:translateX(-100%);}
+  .dash-main{margin-left:0;}
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="#">Pro<span>Tip</span></a>
-  <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#math">Why ProTip</a>
-    <a href="#waitlist">Waitlist</a>
+<!-- ══════════════════════════════════════
+     VIEW 1: LANDING
+══════════════════════════════════════ -->
+<div id="landingView" class="view active">
+  <nav>
+    <span class="nav-logo" onclick="showView('landingView')">Pro<span>Tip</span></span>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#math">Why ProTip</a>
+      <a href="#waitlist">Waitlist</a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn nav-btn-ghost" onclick="showView('loginView')">Log In</button>
+      <button class="nav-btn nav-btn-fill" onclick="showView('signupView')">Sign Up Free</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-orb"></div>
+    <div class="ring ring1"></div><div class="ring ring2"></div><div class="ring ring3"></div>
+    <div class="hero-badge"><span class="pulse"></span>Now in closed beta</div>
+    <h1 class="hero-title">Pro<span class="accent">Tip</span></h1>
+    <p class="hero-sub">#1 Tipping Platform for Content Creators</p>
+    <div class="hero-btns">
+      <span class="btn-primary" onclick="showView('signupView')">Get Started Free</span>
+      <a href="#how" class="btn-outline">See how it works</a>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num green">100%</div><div class="stat-label">Tips go to you</div></div>
+    <div class="stat-item"><div class="stat-num">₹0</div><div class="stat-label">Commission cut</div></div>
+    <div class="stat-item"><div class="stat-num">Flat</div><div class="stat-label">Monthly subscription</div></div>
+    <div class="stat-item"><div class="stat-num purple">Live</div><div class="stat-label">Real-time alerts</div></div>
   </div>
-  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
-</nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-orb"></div>
-  <div class="ring ring1"></div>
-  <div class="ring ring2"></div>
-  <div class="ring ring3"></div>
-  <div class="hero-badge"><span class="pulse"></span>Now in closed beta</div>
-  <h1 class="hero-title">Pro<span class="accent">Tip</span></h1>
-  <p class="hero-sub">#1 Tipping Platform for Content Creators</p>
-  <div class="hero-btns">
-    <a href="#waitlist" class="btn-primary">Join the Waitlist</a>
-    <a href="#how" class="btn-outline">See how it works</a>
-  </div>
-</section>
-
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stat-item"><div class="stat-num green">100%</div><div class="stat-label">Tips go to you</div></div>
-  <div class="stat-item"><div class="stat-num">₹0</div><div class="stat-label">Commission cut</div></div>
-  <div class="stat-item"><div class="stat-num">Flat</div><div class="stat-label">Monthly subscription</div></div>
-  <div class="stat-item"><div class="stat-num purple">Live</div><div class="stat-label">Real-time alerts</div></div>
-</div>
-
-<!-- HOW TO USE -->
-<section class="how-section" id="how">
-  <div class="section-inner">
-    <div class="section-title">How to Use?</div>
-    <div class="how-grid">
-      <div class="how-card">
-        <div class="how-card-header">Step 1 — Visit Creator's ProTip Page</div>
-        <div class="how-card-body">
-          <div class="how-mockup">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">protip.live/</div>
-            <div class="field">🔍 &nbsp;Search your creator...</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-              <div style="width:22px;height:22px;border-radius:4px;background:rgba(255,0,0,0.2);"></div>
-              <div style="width:22px;height:22px;border-radius:4px;background:rgba(127,119,221,0.2);"></div>
-              <div style="width:22px;height:22px;border-radius:4px;background:rgba(29,158,117,0.2);"></div>
-              <div style="width:22px;height:22px;border-radius:4px;background:rgba(186,117,23,0.2);"></div>
+  <section class="how-section" id="how">
+    <div class="section-inner">
+      <div class="section-title">How to Use?</div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-card-header">Step 1 — Visit Creator's ProTip Page</div>
+          <div class="how-card-body">
+            <div class="how-mockup">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">protip.live/</div>
+              <div class="how-field">🔍 &nbsp;Search your creator...</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                <div style="width:22px;height:22px;border-radius:4px;background:rgba(255,0,0,0.2);"></div>
+                <div style="width:22px;height:22px;border-radius:4px;background:rgba(127,119,221,0.2);"></div>
+                <div style="width:22px;height:22px;border-radius:4px;background:rgba(29,158,117,0.2);"></div>
+                <div style="width:22px;height:22px;border-radius:4px;background:rgba(186,117,23,0.2);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="how-card active">
+          <div class="how-card-header">Step 2 — Fill in your amount, name &amp; message</div>
+          <div class="how-card-body">
+            <div class="how-mockup">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Creator's ProTip Page</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Amount:</div>
+              <div style="display:flex;gap:6px;margin-bottom:6px;">
+                <div style="flex:1;background:var(--bg);border:1px solid var(--purple-dim);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);">200</div>
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text-dim);">INR ▾</div>
+              </div>
+              <div class="how-field" style="color:var(--text-dim);">Your Name</div>
+            </div>
+          </div>
+        </div>
+        <div class="how-card">
+          <div class="how-card-header">Step 3 — Complete the Payment</div>
+          <div class="how-card-body">
+            <div class="how-mockup">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">More ways to pay</div>
+              <div class="pay-row"><span>UPI</span><div style="display:flex;gap:3px;"><div class="pay-dot"></div><div class="pay-dot" style="background:rgba(29,158,117,0.4)"></div></div></div>
+              <div class="pay-row"><span>Debit / Credit Card</span><div class="pay-dot"></div></div>
+              <div class="pay-row"><span>Net Banking</span><div class="pay-dot"></div></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="how-card active">
-        <div class="how-card-header">Step 2 — Fill in your amount, name &amp; message</div>
-        <div class="how-card-body">
-          <div class="how-mockup">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Creator's ProTip Page</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Amount:</div>
-            <div style="display:flex;gap:6px;margin-bottom:6px;">
-              <div style="flex:1;background:var(--bg);border:1px solid var(--purple-dim);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);">200</div>
-              <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text-dim);">INR ▾</div>
-            </div>
-            <div class="field" style="color:var(--text-dim);">Your Name</div>
+    </div>
+  </section>
+
+  <div class="ticker-section">
+    <div class="ticker-track">
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.2);color:#AFA9EC">AK</div>Aarav just tipped <span class="amount">₹500</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.2);color:#5DCAA5">SR</div>Sneha just tipped <span class="amount">₹200</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.2);color:#F0997B">VM</div>Vikram just tipped <span class="amount">₹1,000</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(186,117,23,0.2);color:#EF9F27">PG</div>Priya just tipped <span class="amount">₹350</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="amount">₹750</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.15);color:#5DCAA5">NK</div>Neha just tipped <span class="amount">₹150</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.15);color:#F0997B">DS</div>Dev just tipped <span class="amount">₹2,000</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.2);color:#AFA9EC">AK</div>Aarav just tipped <span class="amount">₹500</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.2);color:#5DCAA5">SR</div>Sneha just tipped <span class="amount">₹200</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.2);color:#F0997B">VM</div>Vikram just tipped <span class="amount">₹1,000</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(186,117,23,0.2);color:#EF9F27">PG</div>Priya just tipped <span class="amount">₹350</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="amount">₹750</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.15);color:#5DCAA5">NK</div>Neha just tipped <span class="amount">₹150</span></div>
+      <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.15);color:#F0997B">DS</div>Dev just tipped <span class="amount">₹2,000</span></div>
+    </div>
+  </div>
+
+  <section class="math-section" id="math">
+    <div class="section-inner">
+      <div class="math-label">The math is simple</div>
+      <h2 class="math-headline">Other platforms <span class="cut">take your money.</span><br>We don't.</h2>
+      <p class="math-subtext">Drag the slider to see exactly how much more you keep with ProTip every month — no hidden fees, no percentage cuts, ever.</p>
+      <div class="calc-wrap">
+        <div class="calc-row">
+          <div class="calc-label">Monthly tips received</div>
+          <input type="range" class="calc-slider" id="tipsSlider" min="1000" max="100000" step="500" value="20000"/>
+          <div class="calc-val" id="tipsVal">₹20,000</div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Competitor commission</div>
+          <input type="range" class="calc-slider" id="commSlider" min="2" max="15" step="0.5" value="5"/>
+          <div class="calc-val" id="commVal">5%</div>
+        </div>
+        <div class="calc-results">
+          <div class="result-box theirs">
+            <div class="result-platform">Other platforms</div>
+            <div class="result-amount" id="theirAmount">₹19,000</div>
+            <div class="result-note">After commission cut</div>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="result-box ours">
+            <div class="result-platform">ProTip</div>
+            <div class="result-amount" id="ourAmount">₹20,000</div>
+            <div class="result-note">You keep everything</div>
           </div>
         </div>
+        <div class="extra-earn">You earn <strong id="extraAmount">₹1,000</strong> more every month with ProTip</div>
       </div>
-      <div class="how-card">
-        <div class="how-card-header">Step 3 — Complete the Payment</div>
-        <div class="how-card-body">
-          <div class="how-mockup">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">More ways to pay</div>
-            <div class="pay-row"><span>UPI</span><div style="display:flex;gap:3px;"><div class="pay-dot"></div><div class="pay-dot" style="background:rgba(29,158,117,0.4)"></div></div></div>
-            <div class="pay-row"><span>Debit / Credit Card</span><div class="pay-dot"></div></div>
-            <div class="pay-row"><span>Net Banking</span><div class="pay-dot"></div></div>
-          </div>
+      <div style="margin-bottom:20px;"><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;">See how we compare</div></div>
+      <div class="compare-strip">
+        <div class="compare-item protip">
+          <div class="ci-name">ProTip</div>
+          <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val good">0%</span></div>
+          <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Flat</span></div>
+          <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val good">Yes</span></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-name">StreamElements</div>
+          <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">~2-5%</span></div>
+          <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
+          <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Limited</span></div>
+          <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-name">Streamlabs</div>
+          <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">~2.5%</span></div>
+          <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val ok">Freemium</span></div>
+          <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Limited</span></div>
+          <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-name">Tipeee</div>
+          <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">8%</span></div>
+          <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
+          <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val good">Yes</span></div>
+          <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-name">Buy Me a Coffee</div>
+          <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">5%</span></div>
+          <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
+          <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val bad">No</span></div>
+          <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Basic</span></div>
+          <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- LIVE TICKER -->
-<div class="ticker-section">
-  <div class="ticker-track" id="ticker">
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.2);color:#AFA9EC">AK</div>Aarav just tipped <span class="amount">₹500</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.2);color:#5DCAA5">SR</div>Sneha just tipped <span class="amount">₹200</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.2);color:#F0997B">VM</div>Vikram just tipped <span class="amount">₹1,000</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(186,117,23,0.2);color:#EF9F27">PG</div>Priya just tipped <span class="amount">₹350</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="amount">₹750</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.15);color:#5DCAA5">NK</div>Neha just tipped <span class="amount">₹150</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.15);color:#F0997B">DS</div>Dev just tipped <span class="amount">₹2,000</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.2);color:#AFA9EC">AK</div>Aarav just tipped <span class="amount">₹500</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.2);color:#5DCAA5">SR</div>Sneha just tipped <span class="amount">₹200</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.2);color:#F0997B">VM</div>Vikram just tipped <span class="amount">₹1,000</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(186,117,23,0.2);color:#EF9F27">PG</div>Priya just tipped <span class="amount">₹350</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(127,119,221,0.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="amount">₹750</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(29,158,117,0.15);color:#5DCAA5">NK</div>Neha just tipped <span class="amount">₹150</span></div>
-    <div class="ticker-item"><div class="ticker-avatar" style="background:rgba(216,90,48,0.15);color:#F0rzymF0997B">DS</div>Dev just tipped <span class="amount">₹2,000</span></div>
+  <section class="waitlist-section" id="waitlist">
+    <div class="waitlist-inner">
+      <div class="waitlist-title">Ready to keep 100% of your tips?</div>
+      <p class="waitlist-sub">Join ProTip today — or get on the waitlist if spots are full. No commission. Ever.</p>
+      <span class="btn-waitlist" onclick="showView('signupView')" style="cursor:pointer;">Create Your Account →</span>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#">Community Guidelines</a>
+      <a href="#">About Platform &amp; Pricing</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Shipping &amp; Delivery Policy</a>
+      <a href="#">Refund &amp; Cancellation Policy</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="footer-credit">ProTip by <span>protip.live</span></div>
+  </footer>
+</div><!-- end landingView -->
+
+
+<!-- ══════════════════════════════════════
+     VIEW 2: SIGN UP
+══════════════════════════════════════ -->
+<div id="signupView" class="view">
+  <div class="auth-overlay">
+    <div class="auth-orb"></div>
+    <div class="auth-card">
+      <div class="auth-logo" onclick="showView('landingView')">Pro<span>Tip</span></div>
+      <div class="auth-tagline">#1 Tipping Platform for Creators</div>
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Join 500+ creators already on ProTip</div>
+
+      <button class="btn-google" onclick="googleAuth()">
+        <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider"><span>or sign up with email</span></div>
+
+      <div class="auth-field">
+        <label>Channel / Creator Name</label>
+        <input type="text" id="su-name" placeholder="Your channel name" />
+      </div>
+      <div class="auth-field">
+        <label>Email Address</label>
+        <input type="email" id="su-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="su-pass" placeholder="Min. 8 characters" />
+      </div>
+
+      <button class="btn-auth" onclick="emailSignup()">Create Account</button>
+
+      <div class="auth-terms">By signing up you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></div>
+      <div class="auth-switch">Already have an account? <a onclick="showView('loginView')">Log in</a></div>
+    </div>
   </div>
 </div>
 
-<!-- THE MATH SECTION — UNIQUE -->
-<section class="math-section" id="math">
-  <div class="section-inner">
-    <div class="math-label">The math is simple</div>
-    <h2 class="math-headline">Other platforms <span class="cut">take your money.</span><br>We don't.</h2>
-    <p class="math-subtext">Drag the slider to see exactly how much more you keep with ProTip every month — no hidden fees, no percentage cuts, ever.</p>
 
-    <!-- INTERACTIVE CALCULATOR -->
-    <div class="calc-wrap">
-      <div class="calc-row">
-        <div class="calc-label">Monthly tips received</div>
-        <input type="range" class="calc-slider" id="tipsSlider" min="1000" max="100000" step="500" value="20000"/>
-        <div class="calc-val" id="tipsVal">₹20,000</div>
+<!-- ══════════════════════════════════════
+     VIEW 3: LOG IN
+══════════════════════════════════════ -->
+<div id="loginView" class="view">
+  <div class="auth-overlay">
+    <div class="auth-orb"></div>
+    <div class="auth-card">
+      <div class="auth-logo" onclick="showView('landingView')">Pro<span>Tip</span></div>
+      <div class="auth-tagline">#1 Tipping Platform for Creators</div>
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Log in to your creator dashboard</div>
+
+      <button class="btn-google" onclick="googleAuth()">
+        <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider"><span>or log in with email</span></div>
+
+      <div class="auth-field">
+        <label>Email Address</label>
+        <input type="email" id="li-email" placeholder="you@example.com" />
       </div>
-      <div class="calc-row">
-        <div class="calc-label">Competitor commission</div>
-        <input type="range" class="calc-slider" id="commSlider" min="2" max="15" step="0.5" value="5" style="--track:var(--purple)"/>
-        <div class="calc-val" id="commVal">5%</div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="li-pass" placeholder="Your password" />
       </div>
 
-      <div class="calc-results">
-        <div class="result-box theirs">
-          <div class="result-platform">Other platforms</div>
-          <div class="result-amount" id="theirAmount">₹19,000</div>
-          <div class="result-note">After commission cut</div>
+      <button class="btn-auth" onclick="emailLogin()">Log In</button>
+
+      <div class="auth-terms"><a href="#" style="color:var(--purple-light);">Forgot your password?</a></div>
+      <div class="auth-switch">Don't have an account? <a onclick="showView('signupView')">Sign up free</a></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     VIEW 4: DASHBOARD
+══════════════════════════════════════ -->
+<div id="dashView" class="view">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-wordmark">Pro<span>Tip</span></div>
+      <div class="sidebar-badge">BETA</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <div class="s-nav-item active">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h4a1 1 0 001-1v-3h2v3a1 1 0 001 1h4a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+        Dashboard <span class="live-dot"></span>
+      </div>
+      <div class="s-nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/></svg>
+        Tips
+      </div>
+      <div class="s-nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+        Analytics
+      </div>
+      <div class="s-nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+        Payouts
+      </div>
+      <div class="nav-section-label">Setup</div>
+      <div class="s-nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>
+        Tippers
+      </div>
+      <div class="s-nav-item">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">YC</div>
+        <div>
+          <div class="user-name" id="sidebarName">Your Channel</div>
+          <div class="user-plan">Pro Plan · Active</div>
         </div>
-        <div class="vs-badge">VS</div>
-        <div class="result-box ours">
-          <div class="result-platform">ProTip</div>
-          <div class="result-amount" id="ourAmount">₹20,000</div>
-          <div class="result-note">You keep everything</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash-main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard</div>
+      <div class="topbar-right">
+        <span style="font-size:13px;color:var(--text-dim)" id="dashDate">Apr 2026</span>
+        <button class="topbar-btn tb-outline">↓ Export</button>
+        <button class="topbar-btn tb-fill">+ Share Tip Link</button>
+        <button class="topbar-btn tb-danger" onclick="logout()">Log out</button>
+      </div>
+    </div>
+
+    <div class="tip-link-bar">
+      <div>
+        <div class="tlb-label">Your tip page</div>
+        <div class="tlb-url">protip.live/<span id="tipPageSlug">yourchannel</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="platform-pill pill-yt">YouTube</span>
+        <span class="platform-pill pill-tw">Twitch</span>
+        <button class="copy-btn" onclick="this.textContent='Copied ✓';setTimeout(()=>this.textContent='Copy link',1500)">Copy link</button>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <div class="stats-grid">
+        <div class="stat-card highlight">
+          <div class="sc-label"><span class="notif-dot"></span>Total tips received</div>
+          <div class="sc-val green">₹24,830</div>
+          <div class="sc-change up">↑ 18.4% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Tips this month</div>
+          <div class="sc-val">147</div>
+          <div class="sc-change up">↑ 23 more than last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Avg tip amount</div>
+          <div class="sc-val">₹169</div>
+          <div class="sc-change neutral">— Same as last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Platform cut</div>
+          <div class="sc-val" style="color:#E24B4A">₹0</div>
+          <div class="sc-change up">100% yours, always</div>
         </div>
       </div>
 
-      <div class="extra-earn">
-        You earn <strong id="extraAmount">₹1,000</strong> more every month with ProTip
+      <div class="mid-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Earnings overview</span>
+            <button class="panel-action">View all</button>
+          </div>
+          <div class="chart-area">
+            <div class="chart-tabs">
+              <button class="tab active" onclick="switchTab(this,'7D')">7D</button>
+              <button class="tab" onclick="switchTab(this,'30D')">30D</button>
+              <button class="tab" onclick="switchTab(this,'90D')">90D</button>
+              <button class="tab" onclick="switchTab(this,'All')">All</button>
+            </div>
+            <div class="chart-wrap"><canvas id="earningsChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Recent tips</span>
+            <button class="panel-action">See all</button>
+          </div>
+          <div class="tip-row"><div class="tip-ava" style="background:rgba(127,119,221,0.15);color:#AFA9EC">AK</div><div class="tip-info"><div class="tip-name">Aarav K.</div><div class="tip-msg">Awesome stream bro!</div></div><div class="tip-right"><div class="tip-amount">₹500</div><div class="tip-time">2 min ago</div></div></div>
+          <div class="tip-row"><div class="tip-ava" style="background:rgba(29,158,117,0.15);color:#5DCAA5">SR</div><div class="tip-info"><div class="tip-name">Sneha R.</div><div class="tip-msg">Love the content, keep it up!</div></div><div class="tip-right"><div class="tip-amount">₹200</div><div class="tip-time">18 min ago</div></div></div>
+          <div class="tip-row"><div class="tip-ava" style="background:rgba(216,90,48,0.15);color:#F0997B">VM</div><div class="tip-info"><div class="tip-name">Vikram M.</div><div class="tip-msg">That clutch was insane!!</div></div><div class="tip-right"><div class="tip-amount">₹1,000</div><div class="tip-time">45 min ago</div></div></div>
+          <div class="tip-row"><div class="tip-ava" style="background:rgba(186,117,23,0.15);color:#EF9F27">PG</div><div class="tip-info"><div class="tip-name">Priya G.</div><div class="tip-msg">First time watching, loved it</div></div><div class="tip-right"><div class="tip-amount">₹150</div><div class="tip-time">1 hr ago</div></div></div>
+          <div class="tip-row"><div class="tip-ava" style="background:rgba(127,119,221,0.12);color:#AFA9EC">RJ</div><div class="tip-info"><div class="tip-name">Rohan J.</div><div class="tip-msg">GG! Play more ranked pls</div></div><div class="tip-right"><div class="tip-amount">₹300</div><div class="tip-time">2 hr ago</div></div></div>
+        </div>
+      </div>
+
+      <div class="bottom-grid">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Top tippers this month</span><button class="panel-action">Full leaderboard</button></div>
+          <div class="tipper-row"><div class="tipper-rank gold">#1</div><div class="tip-ava" style="background:rgba(186,117,23,0.15);color:#EF9F27;width:30px;height:30px;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;">VM</div><div class="tipper-info"><div class="tipper-name">Vikram M.</div><div class="tipper-tips">14 tips</div><div class="tipper-bar-wrap"><div class="tipper-bar" style="width:100%;background:#EF9F27"></div></div></div><div class="tipper-amount">₹6,200</div></div>
+          <div class="tipper-row"><div class="tipper-rank silver">#2</div><div class="tip-ava" style="background:rgba(127,119,221,0.15);color:#AFA9EC;width:30px;height:30px;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;">AK</div><div class="tipper-info"><div class="tipper-name">Aarav K.</div><div class="tipper-tips">9 tips</div><div class="tipper-bar-wrap"><div class="tipper-bar" style="width:72%"></div></div></div><div class="tipper-amount">₹4,450</div></div>
+          <div class="tipper-row"><div class="tipper-rank bronze">#3</div><div class="tip-ava" style="background:rgba(29,158,117,0.15);color:#5DCAA5;width:30px;height:30px;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;">SR</div><div class="tipper-info"><div class="tipper-name">Sneha R.</div><div class="tipper-tips">11 tips</div><div class="tipper-bar-wrap"><div class="tipper-bar" style="width:55%"></div></div></div><div class="tipper-amount">₹3,400</div></div>
+          <div class="tipper-row"><div class="tipper-rank">#4</div><div class="tip-ava" style="background:rgba(216,90,48,0.15);color:#F0997B;width:30px;height:30px;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;">PG</div><div class="tipper-info"><div class="tipper-name">Priya G.</div><div class="tipper-tips">7 tips</div><div class="tipper-bar-wrap"><div class="tipper-bar" style="width:38%"></div></div></div><div class="tipper-amount">₹2,350</div></div>
+          <div class="tipper-row"><div class="tipper-rank">#5</div><div class="tip-ava" style="background:rgba(127,119,221,0.1);color:#AFA9EC;width:30px;height:30px;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;">RJ</div><div class="tipper-info"><div class="tipper-name">Rohan J.</div><div class="tipper-tips">5 tips</div><div class="tipper-bar-wrap"><div class="tipper-bar" style="width:25%"></div></div></div><div class="tipper-amount">₹1,550</div></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Payout summary</span><button class="panel-action">History</button></div>
+          <div class="payout-section">
+            <div class="payout-balance">
+              <div class="pb-label">Available to withdraw</div>
+              <div class="pb-amount">₹18,430</div>
+              <div class="pb-sub">Last payout: Apr 20, 2026</div>
+            </div>
+            <div class="payout-row"><span class="pr-label">Total earned this month</span><span class="pr-val green">₹24,830</span></div>
+            <div class="payout-row"><span class="pr-label">Platform fee</span><span class="pr-val">Flat subscription</span></div>
+            <div class="payout-row"><span class="pr-label">Commission cut</span><span class="pr-val green">₹0 (0%)</span></div>
+            <div class="payout-row"><span class="pr-label">Already withdrawn</span><span class="pr-val">₹6,400</span></div>
+            <button class="withdraw-btn">Withdraw ₹18,430 →</button>
+          </div>
+        </div>
       </div>
     </div>
+  </main>
+</div><!-- end dashView -->
 
-    <!-- COMPARISON STRIP -->
-    <div style="margin-bottom:20px;">
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text);">See how we compare</div>
-    </div>
-    <div class="compare-strip">
-      <div class="compare-item protip">
-        <div class="ci-name">ProTip</div>
-        <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val good">0%</span></div>
-        <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Flat</span></div>
-        <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val good">Yes</span></div>
-      </div>
-      <div class="compare-item">
-        <div class="ci-name">StreamElements</div>
-        <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">~2-5%</span></div>
-        <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
-        <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Limited</span></div>
-        <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
-      </div>
-      <div class="compare-item">
-        <div class="ci-name">Streamlabs</div>
-        <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">~2.5%</span></div>
-        <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val ok">Freemium</span></div>
-        <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Limited</span></div>
-        <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
-      </div>
-      <div class="compare-item">
-        <div class="ci-name">Tipeee</div>
-        <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">8%</span></div>
-        <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
-        <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val good">Yes</span></div>
-        <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
-      </div>
-      <div class="compare-item">
-        <div class="ci-name">Buy Me a Coffee</div>
-        <div class="ci-row"><span class="ci-key">Commission</span><span class="ci-val bad">5%</span></div>
-        <div class="ci-row"><span class="ci-key">Monthly fee</span><span class="ci-val good">Free</span></div>
-        <div class="ci-row"><span class="ci-key">Realtime alerts</span><span class="ci-val bad">No</span></div>
-        <div class="ci-row"><span class="ci-key">Custom page</span><span class="ci-val ok">Basic</span></div>
-        <div class="ci-row"><span class="ci-key">UPI support</span><span class="ci-val bad">No</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WAITLIST -->
-<section class="waitlist-section" id="waitlist">
-  <div class="waitlist-inner">
-    <div class="waitlist-title">Join the Waitlist</div>
-    <p class="waitlist-sub">ProTip is currently available to a limited number of creators. Join our waitlist to get early access when it's available!</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdSvujzVPQ3A_Iy1IVDlqj0ztG09Sii4_Ql3FkRojAgMbsa-w/viewform" target="_blank" class="btn-waitlist">Join Now →</a>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-links">
-    <a href="#">Community Guidelines</a>
-    <a href="#">About Platform &amp; Pricing</a>
-    <a href="#">Terms &amp; Conditions</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Shipping &amp; Delivery Policy</a>
-    <a href="#">Refund &amp; Cancellation Policy</a>
-    <a href="#">Contact Us</a>
-  </div>
-  <div class="footer-credit">ProTip by <span>protip.live</span></div>
-</footer>
 
 <script>
-const tipsSlider = document.getElementById('tipsSlider');
-const commSlider = document.getElementById('commSlider');
-const tipsVal = document.getElementById('tipsVal');
-const commVal = document.getElementById('commVal');
-const theirAmount = document.getElementById('theirAmount');
-const ourAmount = document.getElementById('ourAmount');
-const extraAmount = document.getElementById('extraAmount');
-
-function fmt(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
-
-function update(){
-  const tips = parseInt(tipsSlider.value);
-  const comm = parseFloat(commSlider.value);
-  const theirs = tips * (1 - comm/100);
-  const extra = tips - theirs;
-  tipsVal.textContent = fmt(tips);
-  commVal.textContent = comm.toFixed(1) + '%';
-  theirAmount.textContent = fmt(theirs);
-  ourAmount.textContent = fmt(tips);
-  extraAmount.textContent = fmt(extra);
+/* ─── VIEW ROUTER ─── */
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='dashView') setTimeout(initChart,100);
 }
 
-tipsSlider.addEventListener('input', update);
-commSlider.addEventListener('input', update);
-update();
+/* ─── AUTH STATE ─── */
+let currentUser = null;
+
+function googleAuth(){
+  // Simulate Google OAuth — in production replace with real Google Identity Services
+  const mockUser = {
+    name: 'Your Channel',
+    email: 'creator@gmail.com',
+    avatar: null,
+    initials: 'YC',
+    slug: 'yourchannel'
+  };
+  login(mockUser);
+}
+
+function emailSignup(){
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const pass = document.getElementById('su-pass').value;
+  if(!name||!email||!pass){alert('Please fill all fields.');return;}
+  if(pass.length<8){alert('Password must be at least 8 characters.');return;}
+  const user = {
+    name: name,
+    email: email,
+    avatar: null,
+    initials: name.slice(0,2).toUpperCase(),
+    slug: name.toLowerCase().replace(/\s+/g,'-')
+  };
+  login(user);
+}
+
+function emailLogin(){
+  const email = document.getElementById('li-email').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  if(!email||!pass){alert('Please enter your email and password.');return;}
+  const user = {
+    name: email.split('@')[0],
+    email: email,
+    avatar: null,
+    initials: email.slice(0,2).toUpperCase(),
+    slug: email.split('@')[0].toLowerCase()
+  };
+  login(user);
+}
+
+function login(user){
+  currentUser = user;
+  document.getElementById('sidebarName').textContent = user.name;
+  document.getElementById('sidebarAvatar').textContent = user.initials;
+  document.getElementById('tipPageSlug').textContent = user.slug;
+  const now = new Date();
+  document.getElementById('dashDate').textContent = now.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+  showView('dashView');
+}
+
+function logout(){
+  currentUser = null;
+  showView('landingView');
+}
+
+/* ─── CALCULATOR ─── */
+const tipsSlider=document.getElementById('tipsSlider');
+const commSlider=document.getElementById('commSlider');
+const tipsVal=document.getElementById('tipsVal');
+const commVal=document.getElementById('commVal');
+const theirAmount=document.getElementById('theirAmount');
+const ourAmount=document.getElementById('ourAmount');
+const extraAmount=document.getElementById('extraAmount');
+function fmt(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+function updateCalc(){
+  const tips=parseInt(tipsSlider.value);
+  const comm=parseFloat(commSlider.value);
+  const theirs=tips*(1-comm/100);
+  tipsVal.textContent=fmt(tips);
+  commVal.textContent=comm.toFixed(1)+'%';
+  theirAmount.textContent=fmt(theirs);
+  ourAmount.textContent=fmt(tips);
+  extraAmount.textContent=fmt(tips-theirs);
+}
+tipsSlider.addEventListener('input',updateCalc);
+commSlider.addEventListener('input',updateCalc);
+updateCalc();
+
+/* ─── CHART ─── */
+let chart=null;
+const chartData={
+  '7D':{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],data:[1200,1800,950,2400,3100,5200,3800]},
+  '30D':{labels:['W1','W2','W3','W4'],data:[8200,11400,9800,14200]},
+  '90D':{labels:['Jan','Feb','Mar'],data:[28000,31500,42000]},
+  'All':{labels:['Q1','Q2','Q3','Q4'],data:[72000,88000,95000,112000]},
+};
+
+function initChart(){
+  const ctx=document.getElementById('earningsChart');
+  if(!ctx)return;
+  if(chart){chart.destroy();}
+  chart=new Chart(ctx.getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:chartData['7D'].labels,
+      datasets:[{data:chartData['7D'].data,backgroundColor:'rgba(127,119,221,0.25)',hoverBackgroundColor:'rgba(127,119,221,0.55)',borderRadius:5,borderSkipped:false}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{backgroundColor:'#1e1829',borderColor:'rgba(127,119,221,0.3)',borderWidth:1,titleColor:'#AFA9EC',bodyColor:'#EEEDFE',callbacks:{label:(c)=>' ₹'+c.parsed.y.toLocaleString('en-IN')}}
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{color:'#6b6490',font:{size:11}},border:{display:false}},
+        y:{grid:{color:'rgba(127,119,221,0.07)'},ticks:{color:'#6b6490',font:{size:11},callback:v=>'₹'+(v/1000).toFixed(0)+'k'},border:{display:false}}
+      }
+    }
+  });
+}
+
+function switchTab(el, period){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(chart){
+    chart.data.labels=chartData[period].labels;
+    chart.data.datasets[0].data=chartData[period].data;
+    chart.update();
+  }
+}
 </script>
 </body>
 </html>
