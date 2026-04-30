@@ -262,7 +262,9 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 /* alert */
 .awid{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;min-width:220px;}
 @keyframes awpop{from{transform:scale(.7) translateY(20px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
-.awico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+@keyframes awslide{from{transform:translateX(-30px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.awico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;object-fit:cover;}
+.awico img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .awname{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;line-height:1.2;}
 .awmsg{font-size:11px;opacity:.75;margin-top:2px;}
 .awamt{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-top:3px;}
@@ -277,25 +279,17 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 .gwnums{display:flex;justify-content:space-between;font-size:11px;opacity:.7;}
 .gwpct{text-align:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-top:5px;}
 
-/* recent */
+/* recent - SEQUENTIAL ANIMATION */
 .rwid{width:100%;padding:10px 12px;border-radius:8px;}
-.rwtitle{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-bottom:7px;opacity:.8;}
-.rwlist{display:flex;flex-direction:column;gap:5px;}
-.rwitem{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;}
-@keyframes rtslide{from{transform:translateX(-16px);opacity:0;}to{transform:translateX(0);opacity:1;}}
-.rwava{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0;}
+.rwtitle{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-bottom:12px;opacity:.8;text-transform:uppercase;letter-spacing:0.1em;}
+.sequential-container{height:40px;position:relative;overflow:hidden;}
+.rw-item{position:absolute;width:100%;left:0;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transform:translateY(15px);transition:all 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+.rw-item.active{opacity:1;transform:translateY(0);}
+.rw-item.exit{opacity:0;transform:translateY(-15px);}
+.rwava{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0;object-fit:cover;}
+.rwava img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .rwname{flex:1;font-size:11px;font-weight:500;}
 .rwamt{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;}
-
-/* top tipper */
-.ttwid{width:100%;padding:12px 14px;border-radius:10px;text-align:center;}
-.ttcrown{margin-bottom:4px;}
-.ttlbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-bottom:7px;}
-.ttava{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;margin:0 auto 7px;}
-.ttname{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:2px;}
-.ttamt{font-family:'Syne',sans-serif;font-weight:800;}
-.tttips{font-size:10px;opacity:.55;margin-top:2px;}
-@keyframes sprkl{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.25) rotate(12deg);}}
 
 /* OBS MODAL */
 .obsoverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;}
@@ -310,6 +304,15 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 .obscopy{flex:1;padding:10px;background:var(--purple-dim);color:var(--text);border:none;border-radius:8px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .15s;}
 .obscopy:hover{background:var(--purple);}
 .obsclose{padding:10px 18px;background:transparent;border:1px solid var(--border2);color:var(--text-muted);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+
+/* emoji input tabs */
+.emoji-tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;}
+.emoji-tab{padding:5px 10px;font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;cursor:pointer;color:var(--text-muted);transition:all .15s;}
+.emoji-tab:hover{color:var(--text);border-color:var(--purple-dim);}
+.emoji-tab.active{background:var(--purple-dim);color:var(--text);border-color:var(--purple-dim);}
+.emoji-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:8px;}
+.emoji-item{padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:18px;text-align:center;transition:all .15s;}
+.emoji-item:hover{background:var(--purple-dim);transform:scale(1.1);}
 
 @media(max-width:900px){
   .wgrid,.wbody{grid-template-columns:1fr;}
@@ -418,13 +421,6 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
     <div class="titem"><div class="tav" style="background:rgba(127,119,221,.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="tamt">₹750</span></div>
     <div class="titem"><div class="tav" style="background:rgba(29,158,117,.15);color:#5DCAA5">NK</div>Neha just tipped <span class="tamt">₹150</span></div>
     <div class="titem"><div class="tav" style="background:rgba(216,90,48,.15);color:#F0997B">DS</div>Dev just tipped <span class="tamt">₹2,000</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(127,119,221,.2);color:#AFA9EC">AK</div>Aarav just tipped <span class="tamt">₹500</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(29,158,117,.2);color:#5DCAA5">SR</div>Sneha just tipped <span class="tamt">₹200</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(216,90,48,.2);color:#F0997B">VM</div>Vikram just tipped <span class="tamt">₹1,000</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(186,117,23,.2);color:#EF9F27">PG</div>Priya just tipped <span class="tamt">₹350</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(127,119,221,.15);color:#AFA9EC">RJ</div>Rohan just tipped <span class="tamt">₹750</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(29,158,117,.15);color:#5DCAA5">NK</div>Neha just tipped <span class="tamt">₹150</span></div>
-    <div class="titem"><div class="tav" style="background:rgba(216,90,48,.15);color:#F0997B">DS</div>Dev just tipped <span class="tamt">₹2,000</span></div>
   </div>
 </div>
 
@@ -451,14 +447,6 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
       </div>
       <div class="extraearn">You earn <strong id="extraAmt">₹1,000</strong> more every month with ProTip</div>
     </div>
-    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:600;margin-bottom:16px;">See how we compare</div>
-    <div class="cmpstrip">
-      <div class="cmpitem pt"><div class="cmpname">ProTip</div><div class="cmprow"><span class="cmpkey">Commission</span><span class="cmpval good">0%</span></div><div class="cmprow"><span class="cmpkey">Monthly fee</span><span class="cmpval good">Flat</span></div><div class="cmprow"><span class="cmpkey">Realtime alerts</span><span class="cmpval good">Yes</span></div><div class="cmprow"><span class="cmpkey">UPI support</span><span class="cmpval good">Yes</span></div></div>
-      <div class="cmpitem"><div class="cmpname">StreamElements</div><div class="cmprow"><span class="cmpkey">Commission</span><span class="cmpval bad">~2-5%</span></div><div class="cmprow"><span class="cmpkey">Monthly fee</span><span class="cmpval good">Free</span></div><div class="cmprow"><span class="cmpkey">Realtime alerts</span><span class="cmpval good">Yes</span></div><div class="cmprow"><span class="cmpkey">UPI support</span><span class="cmpval bad">No</span></div></div>
-      <div class="cmpitem"><div class="cmpname">Streamlabs</div><div class="cmprow"><span class="cmpkey">Commission</span><span class="cmpval bad">~2.5%</span></div><div class="cmprow"><span class="cmpkey">Monthly fee</span><span class="cmpval ok">Freemium</span></div><div class="cmprow"><span class="cmpkey">Realtime alerts</span><span class="cmpval good">Yes</span></div><div class="cmprow"><span class="cmpkey">UPI support</span><span class="cmpval bad">No</span></div></div>
-      <div class="cmpitem"><div class="cmpname">Tipeee</div><div class="cmprow"><span class="cmpkey">Commission</span><span class="cmpval bad">8%</span></div><div class="cmprow"><span class="cmpkey">Monthly fee</span><span class="cmpval good">Free</span></div><div class="cmprow"><span class="cmpkey">Realtime alerts</span><span class="cmpval good">Yes</span></div><div class="cmprow"><span class="cmpkey">UPI support</span><span class="cmpval bad">No</span></div></div>
-      <div class="cmpitem"><div class="cmpname">Buy Me a Coffee</div><div class="cmprow"><span class="cmpkey">Commission</span><span class="cmpval bad">5%</span></div><div class="cmprow"><span class="cmpkey">Monthly fee</span><span class="cmpval good">Free</span></div><div class="cmprow"><span class="cmpkey">Realtime alerts</span><span class="cmpval bad">No</span></div><div class="cmprow"><span class="cmpkey">UPI support</span><span class="cmpval bad">No</span></div></div>
-    </div>
   </div>
 </section>
 
@@ -477,7 +465,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
   </div>
   <div class="fcredit">ProTip by <span>protip.live</span></div>
 </footer>
-</div><!-- /landing -->
+</div>
 
 <!-- ══════════════════════════════════
      DASHBOARD
@@ -495,23 +483,10 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
       <svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/></svg>
       Tips
     </div>
-    <div class="sbitem" onclick="switchPage('analytics',this)">
-      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
-      Analytics
-    </div>
-    <div class="sbitem" onclick="switchPage('payouts',this)">
-      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
-      Payouts
-    </div>
     <div class="sbsec">Widgets</div>
     <div class="sbitem" onclick="switchPage('widgets',this)">
       <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zm8-8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
       Stream Widgets
-    </div>
-    <div class="sbsec">Setup</div>
-    <div class="sbitem" onclick="switchPage('settings',this)">
-      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
-      Settings
     </div>
   </nav>
   <div class="sbfoot"><div class="usrcard"><div class="usrav">PT</div><div><div class="usrname">ProTip Creator</div><div class="usrplan">Pro · Active</div></div></div></div>
@@ -522,8 +497,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
     <div class="tbtitle" id="tbTitle">Overview</div>
     <div class="tbright">
       <span style="font-size:12px;color:var(--text-dim)">Apr 2026</span>
-      <button class="tbbtn tbo">↓ Export</button>
-      <button class="tbbtn tbf">+ Share Tip Link</button>
+      <button class="tbbtn tbf">+ Refresh</button>
       <button class="tbbtn tbr" onclick="gotoLanding()">← Back to site</button>
     </div>
   </div>
@@ -535,7 +509,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
     </div>
   </div>
 
-  <!-- OVERVIEW -->
+  <!-- OVERVIEW PAGE -->
   <div id="page-overview" class="dashpage active">
     <div class="ovgrid">
       <div class="ovcard"><div class="ovlbl">Total tips received</div><div class="ovval g">₹24,830</div><div class="ovch up">↑ 18.4% vs last month</div></div>
@@ -585,16 +559,29 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
         </div>
         <div class="wbody">
           <div class="wctls">
-            <div class="cg"><label class="clbl">Background Color</label><div class="crow"><input type="color" class="ccolor" id="a-bg" value="#1a1228" oninput="ua()"/><input type="text" class="cinput" id="a-bgh" value="#1a1228" style="flex:1" oninput="syncHex('a-bg','a-bgh');ua()"/></div></div>
+            <div class="cg"><label class="clbl">Emoji or Custom URL</label>
+              <div style="display:flex;gap:5px;margin-bottom:8px;">
+                <input type="text" class="cinput" id="a-emoji" value="💎" placeholder="Emoji or URL" oninput="ua()" style="flex:1;"/>
+                <button class="wabtn waprev" onclick="toggleEmojiPicker()" style="flex-shrink:0;">📋</button>
+              </div>
+              <div id="emojiPicker" style="display:none;">
+                <div class="emoji-tabs">
+                  <button class="emoji-tab active" onclick="switchEmojiTab(this,'popular')">Popular</button>
+                  <button class="emoji-tab" onclick="switchEmojiTab(this,'hearts')">Hearts</button>
+                  <button class="emoji-tab" onclick="switchEmojiTab(this,'fire')">Fire</button>
+                  <button class="emoji-tab" onclick="switchEmojiTab(this,'stars')">Stars</button>
+                </div>
+                <div class="emoji-grid" id="emojiGrid"></div>
+              </div>
+            </div>
+            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Transparent BG</label><div class="tgsw" id="a-trans" onclick="this.classList.toggle('on');ua()"></div></div></div>
+            <div class="cg"><label class="clbl">Background Color</label><div class="crow"><input type="color" class="ccolor" id="a-bg" value="#1a1228" oninput="ua()"/></div></div>
             <div class="cg"><label class="clbl">Text Color</label><div class="crow"><input type="color" class="ccolor" id="a-tc" value="#ffffff" oninput="ua()"/></div></div>
             <div class="cg"><label class="clbl">Amount Color</label><div class="crow"><input type="color" class="ccolor" id="a-ac" value="#5DCAA5" oninput="ua()"/></div></div>
-            <div class="cg"><label class="clbl">Message Template</label><input type="text" class="cinput" id="a-msg" value="{name} just tipped!" oninput="ua()"/></div>
-            <div class="cg"><label class="clbl">Font Size <span class="crangeval" id="a-fsv">15px</span></label><input type="range" class="crange" id="a-fs" min="11" max="22" value="15" oninput="d('a-fsv',this.value+'px');ua()"/></div>
-            <div class="cg"><label class="clbl">Border Radius <span class="crangeval" id="a-brv">10px</span></label><input type="range" class="crange" id="a-br" min="0" max="24" value="10" oninput="d('a-brv',this.value+'px');ua()"/></div>
-            <div class="cg"><label class="clbl">Duration (sec) <span class="crangeval" id="a-durv">5s</span></label><input type="range" class="crange" id="a-dur" min="2" max="15" value="5" oninput="d('a-durv',this.value+'s')"/></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Show Avatar</label><div class="tgsw on" id="a-av" onclick="this.classList.toggle('on');ua()"></div></div></div>
-            <div class="cg"><label class="clbl">Animation Style</label><select class="cselect" id="a-anim" onchange="ua()"><option value="awpop">Pop</option><option value="slideIn">Slide In</option><option value="bounce">Bounce</option></select></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Sound On Tip</label><div class="tgsw on" id="a-snd" onclick="this.classList.toggle('on')"></div></div></div>
+            <div class="cg"><label class="clbl">Border Color</label><div class="crow"><input type="color" class="ccolor" id="a-bc" value="#7F77DD" oninput="ua()"/></div></div>
+            <div class="cg"><label class="clbl">Border Width (px)</label><input type="range" class="crange" id="a-bw" min="0" max="8" value="2" oninput="ua()"/></div>
+            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Glow Effect</label><div class="tgsw on" id="a-glow" onclick="this.classList.toggle('on');ua()"></div></div></div>
+            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Shadow Effect</label><div class="tgsw on" id="a-shadow" onclick="this.classList.toggle('on');ua()"></div></div></div>
           </div>
           <div class="wprev">
             <div class="wprevlbl">Live Preview</div>
@@ -615,16 +602,13 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
         </div>
         <div class="wbody">
           <div class="wctls">
+            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Transparent BG</label><div class="tgsw" id="g-trans" onclick="this.classList.toggle('on');ug()"></div></div></div>
             <div class="cg"><label class="clbl">Goal Title</label><input type="text" class="cinput" id="g-title" value="Tonight's Goal 🎯" oninput="ug()"/></div>
             <div class="cg"><label class="clbl">Goal Amount (₹)</label><input type="number" class="cinput" id="g-goal" value="5000" oninput="ug()"/></div>
             <div class="cg"><label class="clbl">Current Amount (₹)</label><input type="number" class="cinput" id="g-curr" value="2350" oninput="ug()"/></div>
-            <div class="cg"><label class="clbl">Background</label><div class="crow"><input type="color" class="ccolor" id="g-bg" value="#1a1228" oninput="ug()"/><input type="text" class="cinput" value="#1a1228" style="flex:1"/></div></div>
+            <div class="cg"><label class="clbl">Background</label><div class="crow"><input type="color" class="ccolor" id="g-bg" value="#1a1228" oninput="ug()"/></div></div>
             <div class="cg"><label class="clbl">Bar Color</label><div class="crow"><input type="color" class="ccolor" id="g-bc" value="#7F77DD" oninput="ug()"/></div></div>
             <div class="cg"><label class="clbl">Text Color</label><div class="crow"><input type="color" class="ccolor" id="g-tc" value="#ffffff" oninput="ug()"/></div></div>
-            <div class="cg"><label class="clbl">Bar Height <span class="crangeval" id="g-bhv">14px</span></label><input type="range" class="crange" id="g-bh" min="6" max="30" value="14" oninput="d('g-bhv',this.value+'px');ug()"/></div>
-            <div class="cg"><label class="clbl">Border Radius <span class="crangeval" id="g-brv">10px</span></label><input type="range" class="crange" id="g-br" min="0" max="20" value="10" oninput="d('g-brv',this.value+'px');ug()"/></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Show % Text</label><div class="tgsw on" id="g-pct" onclick="this.classList.toggle('on');ug()"></div></div></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Shimmer Animation</label><div class="tgsw on" id="g-shim" onclick="this.classList.toggle('on');ug()"></div></div></div>
           </div>
           <div class="wprev">
             <div class="wprevlbl">Live Preview</div>
@@ -633,7 +617,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
         </div>
       </div>
 
-      <!-- WIDGET 3: RECENT TIPPERS -->
+      <!-- WIDGET 3: RECENT TIPPERS (SEQUENTIAL ONE-BY-ONE) -->
       <div class="wcard">
         <div class="wchead">
           <span class="wctitle">📜 Recent 5 Tippers</span>
@@ -644,62 +628,26 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
         </div>
         <div class="wbody">
           <div class="wctls">
-            <div class="cg"><label class="clbl">Widget Title</label><input type="text" class="cinput" id="r-title" value="Recent Tippers" oninput="ur()"/></div>
-            <div class="cg"><label class="clbl">Background</label><div class="crow"><input type="color" class="ccolor" id="r-bg" value="#0f0f1a" oninput="ur()"/></div></div>
-            <div class="cg"><label class="clbl">Name Color</label><div class="crow"><input type="color" class="ccolor" id="r-nc" value="#ffffff" oninput="ur()"/></div></div>
-            <div class="cg"><label class="clbl">Amount Color</label><div class="crow"><input type="color" class="ccolor" id="r-ac" value="#5DCAA5" oninput="ur()"/></div></div>
-            <div class="cg"><label class="clbl">Row Opacity <span class="crangeval" id="r-opv">5%</span></label><input type="range" class="crange" id="r-op" min="0" max="30" value="5" oninput="d('r-opv',this.value+'%');ur()"/></div>
-            <div class="cg"><label class="clbl">Font Size <span class="crangeval" id="r-fsv">12px</span></label><input type="range" class="crange" id="r-fs" min="9" max="18" value="12" oninput="d('r-fsv',this.value+'px');ur()"/></div>
-            <div class="cg"><label class="clbl">Scroll Speed</label><select class="cselect" id="r-spd"><option value="4000">Slow</option><option value="2500" selected>Normal</option><option value="1200">Fast</option></select></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Show Avatars</label><div class="tgsw on" id="r-av" onclick="this.classList.toggle('on');ur()"></div></div></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Animate New Tips</label><div class="tgsw on" id="r-anim" onclick="this.classList.toggle('on')"></div></div></div>
+            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Transparent BG</label><div class="tgsw" id="r-trans" onclick="this.classList.toggle('on');ur()"></div></div></div>
+            <div class="cg"><label class="clbl">Background Color</label><input type="color" class="ccolor" id="r-bg" value="#0f0f1a" oninput="ur()"/></div>
+            <div class="cg"><label class="clbl">Name Color</label><input type="color" class="ccolor" id="r-nc" value="#ffffff" oninput="ur()"/></div>
+            <div class="cg"><label class="clbl">Amount Color</label><input type="color" class="ccolor" id="r-ac" value="#5DCAA5" oninput="ur()"/></div>
+            <div class="cg"><label class="clbl">Rotation Speed (ms)</label><input type="number" class="cinput" id="r-speed" value="3000" oninput="ur()"/></div>
           </div>
           <div class="wprev">
-            <div class="wprevlbl">Live Preview (click Simulate Tip)</div>
-            <div class="prevbox" style="align-items:flex-start;padding:10px;" id="r-prevbox"></div>
+            <div class="wprevlbl">Sequential Animation (Click Simulate)</div>
+            <div class="prevbox" id="r-prevbox"></div>
           </div>
         </div>
       </div>
 
-      <!-- WIDGET 4: TOP TIPPER -->
-      <div class="wcard">
-        <div class="wchead">
-          <span class="wctitle">👑 Top Tipper of the Day</span>
-          <div class="wcacts">
-            <button class="wabtn waprev" onclick="ut()">▶ Refresh</button>
-            <button class="wabtn wasave" onclick="openOBS('top')">💾 Save &amp; Get OBS URL</button>
-          </div>
-        </div>
-        <div class="wbody">
-          <div class="wctls">
-            <div class="cg"><label class="clbl">Widget Title</label><input type="text" class="cinput" id="t-title" value="Top Tipper Today 👑" oninput="ut()"/></div>
-            <div class="cg"><label class="clbl">Background</label><div class="crow"><input type="color" class="ccolor" id="t-bg" value="#1a1228" oninput="ut()"/></div></div>
-            <div class="cg"><label class="clbl">Crown Color</label><div class="crow"><input type="color" class="ccolor" id="t-cc" value="#EF9F27" oninput="ut()"/></div></div>
-            <div class="cg"><label class="clbl">Avatar Background</label><div class="crow"><input type="color" class="ccolor" id="t-ab" value="#534AB7" oninput="ut()"/></div></div>
-            <div class="cg"><label class="clbl">Amount Color</label><div class="crow"><input type="color" class="ccolor" id="t-ac" value="#EF9F27" oninput="ut()"/></div></div>
-            <div class="cg"><label class="clbl">Text Color</label><div class="crow"><input type="color" class="ccolor" id="t-tc" value="#ffffff" oninput="ut()"/></div></div>
-            <div class="cg"><label class="clbl">Border Radius <span class="crangeval" id="t-brv">12px</span></label><input type="range" class="crange" id="t-br" min="0" max="24" value="12" oninput="d('t-brv',this.value+'px');ut()"/></div>
-            <div class="cg"><label class="clbl">Avatar Size <span class="crangeval" id="t-asv">52px</span></label><input type="range" class="crange" id="t-as" min="32" max="80" value="52" oninput="d('t-asv',this.value+'px');ut()"/></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Animated Crown</label><div class="tgsw on" id="t-anim" onclick="this.classList.toggle('on');ut()"></div></div></div>
-            <div class="cg"><div class="ctog"><label class="clbl" style="margin:0">Show Tip Count</label><div class="tgsw on" id="t-count" onclick="this.classList.toggle('on');ut()"></div></div></div>
-          </div>
-          <div class="wprev">
-            <div class="wprevlbl">Live Preview</div>
-            <div class="prevbox" id="t-prevbox"></div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /wgrid -->
-  </div><!-- /widgets page -->
+    </div>
+  </div>
 
   <!-- OTHER PAGES -->
   <div id="page-tips" class="dashpage"><div style="padding-top:20px;font-family:'Syne',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;">Tips</div><p style="color:var(--text-dim);font-size:14px;">Full tip history coming soon.</p></div>
-  <div id="page-analytics" class="dashpage"><div style="padding-top:20px;font-family:'Syne',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;">Analytics</div><p style="color:var(--text-dim);font-size:14px;">Detailed analytics coming soon.</p></div>
-  <div id="page-payouts" class="dashpage"><div style="padding-top:20px;font-family:'Syne',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;">Payouts</div><p style="color:var(--text-dim);font-size:14px;">Payout management coming soon.</p></div>
-  <div id="page-settings" class="dashpage"><div style="padding-top:20px;font-family:'Syne',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;">Settings</div><p style="color:var(--text-dim);font-size:14px;">Account settings coming soon.</p></div>
 </main>
-</div><!-- /dash -->
+</div>
 
 <!-- OBS MODAL -->
 <div class="obsoverlay" id="obsModal">
@@ -724,11 +672,40 @@ footer{padding:32px 48px;border-top:1px solid var(--border);text-align:center;}
 </div>
 
 <script>
-/* ─── helpers ─── */
 const $ = id => document.getElementById(id);
 const d = (id,v) => $(id).textContent = v;
 
-/* ─── view router ─── */
+const emojiPacks={
+  popular:['💎','🎉','🚀','⭐','👑','💜','🔥','✨','🎊','💯','🌟','💖'],
+  hearts:['💖','💝','💗','💓','💕','❤️','🧡','💛','💚','💙','💜','🖤'],
+  fire:['🔥','🌶️','⚡','💥','🌋','☄️','💫','✨','🎆','🎇','⛈️','🌪️'],
+  stars:['⭐','🌟','✨','💫','🌠','🌌','💫','⚡','🌃','🎇','🎆','✨']
+};
+
+function toggleEmojiPicker(){
+  const picker=$('emojiPicker');
+  picker.style.display=picker.style.display==='none'?'block':'none';
+  if(picker.style.display==='block') loadEmojiGrid('popular');
+}
+
+function switchEmojiTab(el,tab){
+  document.querySelectorAll('.emoji-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  loadEmojiGrid(tab);
+}
+
+function loadEmojiGrid(tab){
+  const grid=$('emojiGrid');
+  grid.innerHTML='';
+  emojiPacks[tab].forEach(emoji=>{
+    const item=document.createElement('div');
+    item.className='emoji-item';
+    item.textContent=emoji;
+    item.onclick=()=>{$('a-emoji').value=emoji;ua();toggleEmojiPicker();}
+    grid.appendChild(item);
+  });
+}
+
 function gotoLanding(){
   $('landingView').classList.add('active');
   $('dashView').classList.remove('active');
@@ -738,22 +715,21 @@ function gotoDash(){
   $('landingView').classList.remove('active');
   $('dashView').classList.add('active');
   window.scrollTo(0,0);
-  setTimeout(()=>{initChart();ua();ug();ur();ut();},80);
+  setTimeout(()=>{initChart();ua();ug();ur();},80);
 }
 
-/* ─── sidebar nav ─── */
-const pageNames={overview:'Overview',tips:'Tips',analytics:'Analytics',payouts:'Payouts',widgets:'Stream Widgets',settings:'Settings'};
+const pageNames={overview:'Overview',tips:'Tips',widgets:'Stream Widgets'};
 function switchPage(pg,el){
   document.querySelectorAll('.sbitem').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   document.querySelectorAll('.dashpage').forEach(p=>p.classList.remove('active'));
   $('page-'+pg).classList.add('active');
   $('tbTitle').textContent = pageNames[pg]||pg;
-  if(pg==='widgets') setTimeout(()=>{ua();ug();ur();ut();},60);
+  if(pg==='widgets') setTimeout(()=>{ua();ug();ur();},60);
 }
 
-/* ─── calculator ─── */
 const fmt = n => '₹'+Math.round(n).toLocaleString('en-IN');
+
 function calcUpdate(){
   const tips=parseInt($('tipsSlider').value), comm=parseFloat($('commSlider').value);
   const theirs=tips*(1-comm/100);
@@ -764,32 +740,22 @@ $('tipsSlider').addEventListener('input',calcUpdate);
 $('commSlider').addEventListener('input',calcUpdate);
 calcUpdate();
 
-/* ─── chart ─── */
 let chart=null;
 const CD={'7D':{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],data:[1200,1800,950,2400,3100,5200,3800]},'30D':{labels:['W1','W2','W3','W4'],data:[8200,11400,9800,14200]},'90D':{labels:['Jan','Feb','Mar'],data:[28000,31500,42000]},'All':{labels:['Q1','Q2','Q3','Q4'],data:[72000,88000,95000,112000]}};
+
 function initChart(){
   const ctx=$('earningsChart');
   if(!ctx)return;
   if(chart)chart.destroy();
   chart=new Chart(ctx.getContext('2d'),{type:'bar',data:{labels:CD['7D'].labels,datasets:[{data:CD['7D'].data,backgroundColor:'rgba(127,119,221,.25)',hoverBackgroundColor:'rgba(127,119,221,.55)',borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e1829',borderColor:'rgba(127,119,221,.3)',borderWidth:1,titleColor:'#AFA9EC',bodyColor:'#EEEDFE',callbacks:{label:c=>' ₹'+c.parsed.y.toLocaleString('en-IN')}}},scales:{x:{grid:{display:false},ticks:{color:'#6b6490',font:{size:10}},border:{display:false}},y:{grid:{color:'rgba(127,119,221,.07)'},ticks:{color:'#6b6490',font:{size:10},callback:v=>'₹'+(v/1000).toFixed(0)+'k'},border:{display:false}}}}});
 }
+
 function switchTab(el,p){
   document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   if(chart){chart.data.labels=CD[p].labels;chart.data.datasets[0].data=CD[p].data;chart.update();}
 }
 
-/* ─── syncHex ─── */
-function syncHex(colorId,hexId){
-  const v=$( colorId).value;
-  $(hexId).value=v;
-}
-
-/* ══════════════════════════
-   WIDGET LOGIC
-══════════════════════════ */
-
-/* mock data */
 const tippers=[
   {n:'Aarav K.',a:'₹500',i:'AK',c:'#AFA9EC',bg:'rgba(127,119,221,.25)'},
   {n:'Sneha R.',a:'₹200',i:'SR',c:'#5DCAA5',bg:'rgba(29,158,117,.25)'},
@@ -797,65 +763,101 @@ const tippers=[
   {n:'Priya G.',a:'₹350',i:'PG',c:'#EF9F27',bg:'rgba(186,117,23,.25)'},
   {n:'Rohan J.',a:'₹300',i:'RJ',c:'#AFA9EC',bg:'rgba(127,119,221,.2)'},
 ];
-let alertIdx=0, recentList=[...tippers];
 
-/* ── ALERT WIDGET ── */
+let alertIdx=0, recentList=[...tippers], tipperIdx=0, tipperInterval=null;
+
+function isValidUrl(string){
+  try{new URL(string);return true;}catch(_){return false;}
+}
+
 function ua(){
   const t=tippers[alertIdx%tippers.length];
-  const bg=$('a-bg').value, tc=$('a-tc').value, ac=$('a-ac').value;
-  const fs=$('a-fs').value, br=$('a-br').value;
-  const msg=$('a-msg').value.replace('{name}',t.n).replace('{amount}',t.a);
-  const showAv=$('a-av').classList.contains('on');
-  $('a-prevbox').innerHTML=`<div class="awid" style="background:${bg};border-radius:${br}px;animation:awpop .4s cubic-bezier(.175,.885,.32,1.275);">
-    ${showAv?`<div class="awico" style="background:${t.bg}">🎉</div>`:''}
+  const isTrans=$('a-trans').classList.contains('on');
+  const bg=isTrans?'transparent':$('a-bg').value;
+  const tc=$('a-tc').value, ac=$('a-ac').value, bc=$('a-bc').value;
+  const bw=$('a-bw').value;
+  const glow=$('a-glow').classList.contains('on');
+  const shadow=$('a-shadow').classList.contains('on');
+  const emojiOrUrl=$('a-emoji').value;
+
+  const glowSh=glow?`0 0 20px ${bc}66`:'none';
+  const shadowSh=shadow?`0 10px 30px rgba(0,0,0,.4)`:'none';
+
+  let emojiContent='';
+  if(isValidUrl(emojiOrUrl)){
+    emojiContent=`<img src="${emojiOrUrl}" alt="emoji" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  }else{
+    emojiContent=emojiOrUrl;
+  }
+
+  $('a-prevbox').innerHTML=`<div class="awid" style="background:${bg};border:${bw}px solid ${bc};border-radius:10px;box-shadow:${glowSh},${shadowSh};animation:awpop .4s cubic-bezier(.175,.885,.32,1.275);color:${tc};">
+    <div class="awico" style="background:${t.bg}">${emojiContent}</div>
     <div>
-      <div class="awname" style="color:${tc};font-size:${fs}px;">${t.n}</div>
-      <div class="awmsg" style="color:${tc};font-size:${parseInt(fs)-2}px;">${msg}</div>
-      <div class="awamt" style="color:${ac};font-size:${parseInt(fs)+3}px;">${t.a}</div>
+      <div class="awname">PROTIP</div>
+      <div class="awmsg">${t.n} sent a tip!</div>
+      <div class="awamt" style="color:${ac}">${t.a}</div>
     </div>
   </div>`;
 }
+
 function nextAlert(){alertIdx++;ua();}
 
-/* ── GOAL WIDGET ── */
 function ug(){
+  const isTrans=$('g-trans').classList.contains('on');
+  const bg=isTrans?'transparent':$('g-bg').value;
   const title=$('g-title').value;
   const goal=parseFloat($('g-goal').value)||5000;
   const curr=parseFloat($('g-curr').value)||0;
-  const bg=$('g-bg').value, bc=$('g-bc').value, tc=$('g-tc').value;
-  const bh=$('g-bh').value, br=$('g-br').value;
-  const showPct=$('g-pct').classList.contains('on');
-  const shimOn=$('g-shim').classList.contains('on');
+  const bc=$('g-bc').value, tc=$('g-tc').value;
   const pct=Math.min(100,Math.round((curr/goal)*100));
-  $('g-prevbox').innerHTML=`<div class="gwid" style="background:${bg};border-radius:${br}px;color:${tc};width:100%;">
+
+  $('g-prevbox').innerHTML=`<div class="gwid" style="background:${bg};color:${tc};width:100%;">
     <div class="gwtitle">${title}</div>
-    <div class="gwbarbg" style="background:rgba(255,255,255,.1);height:${bh}px;border-radius:${Math.min(bh/2,8)}px;">
-      <div class="gwbarfill" id="gbar" style="width:0%;background:${bc};height:${bh}px;border-radius:${Math.min(bh/2,8)}px;${!shimOn?'animation:none':''}"></div>
+    <div class="gwbarbg" style="background:rgba(255,255,255,.1);height:14px;border-radius:7px;">
+      <div class="gwbarfill" style="width:${pct}%;background:${bc};height:14px;border-radius:7px;"></div>
     </div>
     <div class="gwnums"><span>₹${Math.round(curr).toLocaleString('en-IN')}</span><span>₹${Math.round(goal).toLocaleString('en-IN')}</span></div>
-    ${showPct?`<div class="gwpct" style="color:${bc};">${pct}%</div>`:''}
+    <div class="gwpct" style="color:${bc};">${pct}%</div>
   </div>`;
-  setTimeout(()=>{const b=document.getElementById('gbar');if(b)b.style.width=pct+'%';},30);
 }
 
-/* ── RECENT TIPPERS ── */
 function ur(){
-  const bg=$('r-bg').value, nc=$('r-nc').value, ac=$('r-ac').value;
-  const title=$('r-title').value, op=parseInt($('r-op').value)/100;
-  const fs=$('r-fs').value;
-  const showAv=$('r-av').classList.contains('on');
-  const rows=recentList.slice(0,5).map(t=>`
-    <div class="rwitem" style="background:rgba(255,255,255,${op});">
-      ${showAv?`<div class="rwava" style="background:${t.bg};color:${t.c};width:${parseInt(fs)+12}px;height:${parseInt(fs)+12}px;font-size:${parseInt(fs)-2}px;">${t.i}</div>`:''}
-      <div class="rwname" style="color:${nc};font-size:${fs}px;">${t.n}</div>
-      <div class="rwamt" style="color:${ac};font-size:${fs}px;">${t.a}</div>
-    </div>`).join('');
-  $('r-prevbox').innerHTML=`<div class="rwid" style="background:${bg};border-radius:8px;width:100%;">
-    <div class="rwtitle" style="color:${nc};">${title}</div>
-    <div class="rwlist">${rows}</div>
-  </div>`;
+  const isTrans=$('r-trans').classList.contains('on');
+  const bg=isTrans?'transparent':$('r-bg').value;
+  const nc=$('r-nc').value, ac=$('r-ac').value;
+  const speed=parseInt($('r-speed').value)||3000;
+
+  const container=$('r-prevbox');
+  container.innerHTML=`<div class="rwid" style="background:${bg};border-radius:8px;width:100%;"><div class="sequential-container" id="seq-list"></div></div>`;
+
+  if(tipperInterval) clearInterval(tipperInterval);
+
+  const rotateTip=()=>{
+    const list=$('seq-list');
+    if(!list) return;
+
+    const old=list.querySelector('.active');
+    if(old){
+      old.classList.remove('active');
+      old.classList.add('exit');
+      setTimeout(()=>old.remove(),600);
+    }
+
+    const t=recentList[tipperIdx%recentList.length];
+    const item=document.createElement('div');
+    item.className='rw-item';
+    item.innerHTML=`<div class="rwava" style="background:${t.bg};color:${t.c}">${t.i}</div><div class="rwname" style="color:${nc}">${t.n}</div><div class="rwamt" style="color:${ac}">${t.a}</div>`;
+    list.appendChild(item);
+    setTimeout(()=>item.classList.add('active'),50);
+    tipperIdx++;
+  };
+
+  rotateTip();
+  tipperInterval=setInterval(rotateTip,speed);
 }
+
 const newNames=[['KK','Karan K.','₹450','#C0C0F0','rgba(127,119,221,.25)'],['MA','Meera A.','₹800','#F0C0A0','rgba(216,90,48,.25)'],['DS','Dev S.','₹1,500','#A0F0D0','rgba(29,158,117,.25)'],['RP','Ravi P.','₹250','#F0E090','rgba(186,117,23,.25)']];
+
 function simTip(){
   const n=newNames[Math.floor(Math.random()*newNames.length)];
   recentList.unshift({i:n[0],n:n[1],a:n[2],c:n[3],bg:n[4]});
@@ -863,43 +865,25 @@ function simTip(){
   ur();
 }
 
-/* ── TOP TIPPER ── */
-function ut(){
-  const title=$('t-title').value;
-  const bg=$('t-bg').value, cc=$('t-cc').value, ab=$('t-ab').value;
-  const ac=$('t-ac').value, tc=$('t-tc').value;
-  const br=$('t-br').value, as=parseInt($('t-as').value);
-  const animated=$('t-anim').classList.contains('on');
-  const showCount=$('t-count').classList.contains('on');
-  $('t-prevbox').innerHTML=`<div class="ttwid" style="background:${bg};border-radius:${br}px;color:${tc};width:100%;">
-    <div class="ttcrown" style="color:${cc};font-size:${Math.round(as*.45)}px;${animated?'animation:sprkl 1.5s infinite;display:inline-block':''}">👑</div>
-    <div class="ttlbl" style="color:${tc};">${title}</div>
-    <div class="ttava" style="background:${ab};color:${tc};width:${as}px;height:${as}px;font-size:${Math.round(as*.33)}px;">VM</div>
-    <div class="ttname" style="font-size:${Math.round(as*.27)}px;color:${tc};">Vikram M.</div>
-    <div class="ttamt" style="color:${ac};font-size:${Math.round(as*.38)}px;">₹6,200</div>
-    ${showCount?`<div class="tttips" style="color:${tc}88;">14 tips today</div>`:''}
-    <div style="margin-top:6px;font-size:${Math.round(as*.28)}px;">🎉 🎊 ✨</div>
-  </div>`;
-}
-
-/* ── OBS MODAL ── */
 function openOBS(type){
   const urls={
-    alert:`https://protip.live/widget/alert?ch=yourchannel&key=pt_live_KEY&bg=${encodeURIComponent($('a-bg').value)}&tc=${encodeURIComponent($('a-tc').value)}&ac=${encodeURIComponent($('a-ac').value)}&dur=${$('a-dur').value}`,
-    goal:`https://protip.live/widget/goal?ch=yourchannel&key=pt_live_KEY&bg=${encodeURIComponent($('g-bg').value)}&bc=${encodeURIComponent($('g-bc').value)}&goal=${$('g-goal').value}`,
-    recent:`https://protip.live/widget/recent?ch=yourchannel&key=pt_live_KEY&bg=${encodeURIComponent($('r-bg').value)}&ac=${encodeURIComponent($('r-ac').value)}&count=5`,
-    top:`https://protip.live/widget/top?ch=yourchannel&key=pt_live_KEY&bg=${encodeURIComponent($('t-bg').value)}&ac=${encodeURIComponent($('t-ac').value)}`
+    alert:`https://protip.live/widget/alert?key=pt_live_KEY`,
+    goal:`https://protip.live/widget/goal?key=pt_live_KEY`,
+    recent:`https://protip.live/widget/recent?key=pt_live_KEY`
   };
   $('obsUrl').textContent=urls[type];
   $('obsModal').classList.add('show');
 }
+
 function closeOBS(){$('obsModal').classList.remove('show');}
+
 function copyOBS(){
   navigator.clipboard.writeText($('obsUrl').textContent).then(()=>{
     $('obsCopyBtn').textContent='✓ Copied!';
     setTimeout(()=>$('obsCopyBtn').textContent='📋 Copy URL',2000);
   });
 }
+
 $('obsModal').addEventListener('click',e=>{if(e.target===$('obsModal'))closeOBS();});
 </script>
 </body>
